@@ -1,0 +1,6 @@
+pandasai
+panda
+streamlit
+pygwalker
+SQLAlchemy 
+psycopg2-binary
