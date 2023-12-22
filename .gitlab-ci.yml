@@ -9,6 +9,7 @@ stages:
 - test
 - build
 - deploy
+
 sast:
   stage: test
 include:
@@ -53,14 +54,14 @@ docker-build:
   rules:
     - if: $CI_COMMIT_BRANCH
       exists:
-        - Dockerfile
+        - build/Dockerfile
 
 #usando o github para fazer o deploy no streamlit
 strealit-deploy:
   image: enyalius/ci
   stage: deploy
   only: 
-    - master
+    - main
   before_script: 
     # Configura o ssh com as chaves privadas
     - eval "$(ssh-agent -s)"
