@@ -39,7 +39,6 @@ docker-build:
   # All other branches are tagged with the escaped branch name (commit ref slug)
   script:
     - cp build/Dockerfile .
-    - rm build 
     - |
       if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
         tag=""
