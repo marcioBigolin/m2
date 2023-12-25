@@ -64,10 +64,9 @@ strealit-deploy:
   before_script: 
     # Configura o ssh com as chaves privadas
     - eval "$(ssh-agent -s)"
-    - echo "$SSH_PRIVATE_KEY" | ssh-add - > /dev/null
+    - echo "$SSH_GITHUB_KEY" | ssh-add - > /dev/null
   script:
     - echo "Connectando ao github"
-    - rm -rf .git
     - git config --global --add safe.directory /app
     - git config user.name "GTECH auto deploy"
     - git config user.email "gtechedu@ufrgs.br"
