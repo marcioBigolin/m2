@@ -36,10 +36,10 @@ def dataFrame():
         dados = toml.load(arquivo)
     st.write(dados)
     # Recuperar os detalhes de conexão do banco de dados
-    #host = dados['connections.postgresql']['host']
-    #database = dados['connections.postgresql']['database']
-    #user = dados['connections.postgresql']['usuario']
-    #password = dados['connections.postgresql']['senha']
+    host = dados['connections.postgresql']['host']
+    database = dados['connections.postgresql']['database']
+    user = dados['connections.postgresql']['usuario']
+    password = dados['connections.postgresql']['senha']
 
     conn = create_engine(f"postgresql://{user}:{password}@{host}:5432/{database}")
 
@@ -114,16 +114,20 @@ def gepeto():
                 st.session_state.prompt_history = []
                 st.session_state.df = None
 
-tab1, tab2, tab3 = st.tabs(["ChatGPT", "Gerador de gráfico", "Entendendo meus dados"])
+tab1, tab2, tab3, tab4 = st.tabs(["Dashboard", "ChatGPT", "Gerador de gráfico", "Entendendo meus dados"])
 
 df = dataFrame()
 
 with tab1:
+    st.title("Resumo")
+    st.text("teste ver se funciona com o Augusto")
+
+with tab2:
    st.header("IA Generativa")
    st.dataframe(df)
    gepeto()
 
-with tab2:
+with tab3:
     st.header("Modo clássico para a criação de gráficos")
     import pygwalker as pyg
     from pygwalker.api.streamlit import StreamlitRenderer, init_streamlit_comm
@@ -140,6 +144,6 @@ with tab2:
     # Render your data exploration interface. Developers can use it to build charts by drag and drop.
     renderer.render_explore()
 
-with tab3:
+with tab4:
     st.title("O MDI trabalha")
     st.text("teste ver se funciona com o Augusto")

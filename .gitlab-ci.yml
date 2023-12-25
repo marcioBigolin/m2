@@ -65,13 +65,14 @@ strealit-deploy:
     # Configura o ssh com as chaves privadas
     - eval "$(ssh-agent -s)"
     - echo "$SSH_GITHUB_KEY" | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh/know_hosts
+    - ssh-keyscan github.com >>~/.ssh/known_hosts
+
   script:
     - echo "Connectando ao github"
     - git config --global --add safe.directory /app
     - git config user.name "GTECH auto deploy"
     - git config user.email "gtechedu@ufrgs.br"
-    - git remote add origin git@github.com:marcioBigolin/my-data-analyser.git
-    - git add .
-    - git commit -a -m "Commit $CI_COMMIT_REF_NAME"
-    - git push
+    - git remote add github git@github.com:marcioBigolin/my-data-analyser.git
+    - git push github
 
