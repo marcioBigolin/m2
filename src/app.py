@@ -123,7 +123,7 @@ else:
     st.markdown("##")
 
     # Criar uma seleção dos anos na barra lateral do dashboard
-    st.sidebar.image("assets/logo.png", width=200)
+    st.sidebar.image("./assets/logo.png", width=200)
     st.sidebar.title("Filtre os dados")
     years= st.sidebar.multiselect(
         'Quais anos deseja analizar?',
