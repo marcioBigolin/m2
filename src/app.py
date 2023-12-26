@@ -1,45 +1,22 @@
 import streamlit as st
 import pandas as pd
-import os
+import Eny.confs as Eny
 
-#configure layout
-st.set_page_config(page_title="MDI - Análise com IA", page_icon="🌍", layout="wide")
-st.subheader("Explore os dados utilizando Inteligência artificial")
-st.markdown("##")
-
-def arquivoConf(nome_arquivo):
-    arquivo_local = nome_arquivo.replace('.toml', '.local.toml')
-
-    if os.path.isfile(arquivo_local):
-        return arquivo_local
-    else:
-        return nome_arquivo
 
 
 def dataFrame():
-    # Recebe os parâmetros via GET enquanto sem criptografia mandando direto (usar bearertok)
-    params = st.experimental_get_query_params()
-    # Obtém o valor do parâmetro 'variavel' da URL
-    schemaUsuario = params.get('usuario', ['SEM_DADOS'])[0]
-    bd = params.get('banco', ['SEM_DADOS'])[0]
+
 
     from sqlalchemy import create_engine
-    import toml
 
 
-    # Caminho para o arquivo TOM    
-    caminho_arquivo_tom = arquivoConf('.streamlit/secrets.toml')
-
-
-    # Ler o arquivo TOM
-    with open(caminho_arquivo_tom, 'r') as arquivo:
-        dados = toml.load(arquivo)
-    st.write(dados)
+    #st.write(confs) somente para debug não comitar essa linha descomentada =]
+    
     # Recuperar os detalhes de conexão do banco de dados
-    host = dados['connections']['postgresql']['host']
-    database = dados['connections']['postgresql']['database']
-    user = dados['connections']['postgresql']['username']
-    password = dados['connections']['postgresql']['password']
+    host = confs['connections']['postgresql']['host']
+    database = confs['connections']['postgresql']['database']
+    user = confs['connections']['postgresql']['username']
+    password = confs['connections']['postgresql']['password']
 
     conn = create_engine(f"postgresql://{user}:{password}@{host}:5432/{database}")
 
@@ -51,24 +28,15 @@ def dataFrame():
     df["Year"] = df["data_entrega"].apply(lambda x: str(x.year) )
     df = df.sort_values("Year")
 
-    # Criar uma seleção dos anos na barra lateral do dashboard
-    st.sidebar.image("assets/logo.png", width=200)
-    st.sidebar.title("Filtre os dados")
-    years= st.sidebar.multiselect(
-        'Quais anos deseja analizar?',
-        options=df["Year"].unique(),
-        default=df["Year"].unique())
 
-    mask=df["Year"].isin(years)
-    df=df[mask]
+
+
 
     return df
 
 
-
-
 def gepeto():
-    from pandasai import PandasAI
+    from pandasai import SmartDataframe
     from pandasai.llm.openai import OpenAI
     import matplotlib.pyplot as plt
     import os
@@ -91,7 +59,7 @@ def gepeto():
             if submitted:
                 with st.spinner():
                     llm = OpenAI(api_token=st.session_state.openai_key)
-                    pandas_ai = PandasAI(llm)
+                    pandas_ai = SmartDataframe(llm)
                     x = pandas_ai.run(df, prompt=question)
 
                     if os.path.isfile('temp_chart.png'):
@@ -114,21 +82,8 @@ def gepeto():
                 st.session_state.prompt_history = []
                 st.session_state.df = None
 
-tab1, tab2, tab3, tab4 = st.tabs(["Dashboard", "ChatGPT", "Gerador de gráfico", "Entendendo meus dados"])
 
-df = dataFrame()
-
-with tab1:
-    st.title("Resumo")
-    st.text("teste ver se funciona com o Augusto")
-
-with tab2:
-   st.header("IA Generativa")
-   st.dataframe(df)
-   gepeto()
-
-with tab3:
-    st.header("Modo clássico para a criação de gráficos")
+def pygwalker():
     import pygwalker as pyg
     from pygwalker.api.streamlit import StreamlitRenderer, init_streamlit_comm
     # Establish communication between pygwalker and streamlit
@@ -144,6 +99,57 @@ with tab3:
     # Render your data exploration interface. Developers can use it to build charts by drag and drop.
     renderer.render_explore()
 
-with tab4:
-    st.title("O MDI trabalha")
-    st.text("teste ver se funciona com o Augusto")
+#############################
+
+# Recebe os parâmetros via GET enquanto sem criptografia mandando direto (usar bearertok)
+params = st.experimental_get_query_params()
+# Obtém o valor do parâmetro 'variavel' da URL
+schemaUsuario = params.get('usuario', ['SEM_DADOS'])[0]  
+
+confs = Eny.secrets()
+
+if schemaUsuario == 'SEM_DADOS':
+    st.subheader("Modo Inválido")
+    st.write(f"Acesse pelo site do MDI: <a href='{confs['geral']['mdilink']}'>MDI</a>", unsafe_allow_html=True)
+
+else:
+
+    df = dataFrame()
+
+
+    #configure layout
+    st.set_page_config(page_title="MDI - Análise com IA", page_icon="🌍", layout="wide")
+    st.subheader("Explore os dados utilizando Inteligência artificial")
+    st.markdown("##")
+
+    # Criar uma seleção dos anos na barra lateral do dashboard
+    st.sidebar.image("assets/logo.png", width=200)
+    st.sidebar.title("Filtre os dados")
+    years= st.sidebar.multiselect(
+        'Quais anos deseja analizar?',
+        options=df["Year"].unique(),
+        default=df["Year"].unique())
+
+    mask=df["Year"].isin(years)
+    df=df[mask]
+
+    tab1, tab2, tab3, tab4 = st.tabs(["Dashboard", "ChatGPT", "Gerador de gráfico", "Entendendo meus dados"])
+
+    df = dataFrame()
+
+    with tab1:
+        st.title("Resumo")
+        st.text("Esse painel apresentamos os dados mais comuns das suas turmas.")
+
+    with tab2:
+        st.header("IA Generativa")
+        st.dataframe(df)
+        gepeto()
+
+    with tab3:
+        st.header("Modo clássico para a criação de gráficos")
+        pygwalker()
+
+    with tab4:
+        st.title("O MDI trabalha")
+        st.text("teste ver se funciona com o Augusto")
