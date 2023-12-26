@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker run -it -v $PWD/src:/app gtechedu/streamlit streamlit run app.py
+docker run -it -v $PWD:/app gtechedu/streamlit streamlit run src/app.py
