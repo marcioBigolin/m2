@@ -74,5 +74,5 @@ strealit-deploy:
     - git config user.name "GTECH auto deploy"
     - git config user.email "gtechedu@ufrgs.br"
     - git remote add github git@github.com:marcioBigolin/my-data-analyser.git
-    - git push github
+    - git push github HEAD:main
 

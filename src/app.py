@@ -28,7 +28,7 @@ def dataFrame():
 
 
     # Caminho para o arquivo TOM    
-    caminho_arquivo_tom = '.streamlit/secrets.toml'
+    caminho_arquivo_tom = arquivoConf('.streamlit/secrets.toml')
 
 
     # Ler o arquivo TOM
@@ -36,10 +36,10 @@ def dataFrame():
         dados = toml.load(arquivo)
     st.write(dados)
     # Recuperar os detalhes de conexão do banco de dados
-    host = dados['connections.postgresql']['host']
-    database = dados['connections.postgresql']['database']
-    user = dados['connections.postgresql']['usuario']
-    password = dados['connections.postgresql']['senha']
+    host = dados['connections']['postgresql']['host']
+    database = dados['connections']['postgresql']['database']
+    user = dados['connections']['postgresql']['username']
+    password = dados['connections']['postgresql']['password']
 
     conn = create_engine(f"postgresql://{user}:{password}@{host}:5432/{database}")
 
