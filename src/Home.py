@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import Eny.confs as Eny
+from locale import gettext as _
 
 
 
@@ -27,9 +28,6 @@ def dataFrame():
     df = pd.DataFrame(sql_query, columns = ['titulo', 'nome_completo', 'coh_frazier', 'coh_brunet', 'data_entrega'])
     df["Year"] = df["data_entrega"].apply(lambda x: str(x.year) )
     df = df.sort_values("Year")
-
-
-
 
 
     return df
@@ -109,8 +107,9 @@ schemaUsuario = params.get('usuario', ['SEM_DADOS'])[0]
 confs = Eny.secrets()
 
 if schemaUsuario == 'SEM_DADOS':
-    st.subheader("Modo Inválido")
-    st.write(f"Acesse pelo site do MDI: <a href='{confs['geral']['mdilink']}'>MDI</a>", unsafe_allow_html=True)
+    st.subheader(_("Modo Inválido"))
+    st.markdown(f"Acesse pelo site do [MDI]({confs['geral']['mdilink']})")
+
 
 else:
 
@@ -118,20 +117,20 @@ else:
 
 
     #configure layout
-    st.set_page_config(page_title="MDI - Análise com IA", page_icon="🌍", layout="wide")
-    st.subheader("Explore os dados utilizando Inteligência artificial")
+    st.set_page_config(page_title= _("MDI - Análise com AI"), page_icon="🏡", layout="wide")
+    st.subheader(_("Explore os dados utilizando Inteligência artificial"))
     st.markdown("##")
 
     # Criar uma seleção dos anos na barra lateral do dashboard
-    st.sidebar.image("./assets/logo.png", width=200)
     st.sidebar.title("Filtre os dados")
     years= st.sidebar.multiselect(
-        'Quais anos deseja analizar?',
+        _('Quais anos deseja analizar?'),
         options=df["Year"].unique(),
         default=df["Year"].unique())
 
     mask=df["Year"].isin(years)
     df=df[mask]
+    st.sidebar.image("./assets/logo.png", width=200)
 
     tab1, tab2, tab3, tab4 = st.tabs(["Dashboard", "ChatGPT", "Gerador de gráfico", "Entendendo meus dados"])
 
@@ -141,15 +140,20 @@ else:
         st.title("Resumo")
         st.text("Esse painel apresentamos os dados mais comuns das suas turmas.")
 
+        cols = st.columns(3)
+        cols[0].metric("Total de estudantes", "70 °F", "1.2 °F")
+        cols[1].metric("Wind", "9 mph", "-8%")
+        cols[2].metric("Humidity", "86%", "4%")
+
     with tab2:
         st.header("IA Generativa")
         st.dataframe(df)
-        gepeto()
+        #gepeto()
 
     with tab3:
         st.header("Modo clássico para a criação de gráficos")
-        pygwalker()
+        #pygwalker()
 
     with tab4:
-        st.title("O MDI trabalha")
-        st.text("teste ver se funciona com o Augusto")
+        st.title("Como analisar o dados no MDI/MDA")
+        st.text("O MDI utiliza um modelo estrela (Kimball/Imon) clássico. O que significa que o modelo foi reestruturado para consulta.")

@@ -4,3 +4,4 @@ streamlit
 pygwalker
 SQLAlchemy 
 psycopg2-binary
+pyjwt
