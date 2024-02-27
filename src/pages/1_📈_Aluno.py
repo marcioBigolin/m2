@@ -5,7 +5,6 @@ import pandas as pd
 from locale import gettext as _
 
 
-
 st.set_page_config(page_title="Análise por aluno", page_icon="📈")
 
 params = st.experimental_get_query_params()

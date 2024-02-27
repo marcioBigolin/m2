@@ -148,11 +148,11 @@ else:
     with tab2:
         st.header("IA Generativa")
         st.dataframe(df)
-        #gepeto()
+        gepeto()
 
     with tab3:
         st.header("Modo clássico para a criação de gráficos")
-        #pygwalker()
+        pygwalker()
 
     with tab4:
         st.title("Como analisar o dados no MDI/MDA")
