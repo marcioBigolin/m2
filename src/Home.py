@@ -1,25 +1,11 @@
 import streamlit as st
 import pandas as pd
-import Eny.confs as Eny
+import enyalius as eny
 from locale import gettext as _
 
 
-
 def dataFrame():
-
-
-    from sqlalchemy import create_engine
-
-
-    #st.write(confs) somente para debug não comitar essa linha descomentada =]
-    
-    # Recuperar os detalhes de conexão do banco de dados
-    host = confs['connections']['postgresql']['host']
-    database = confs['connections']['postgresql']['database']
-    user = confs['connections']['postgresql']['username']
-    password = confs['connections']['postgresql']['password']
-
-    conn = create_engine(f"postgresql://{user}:{password}@{host}:5432/{database}")
+    conn=eny.conecta()
 
     # Perform query.
     sql_query =  pd.read_sql_query (f"SELECT * FROM {schemaUsuario}.fato_join;", con=conn)
@@ -104,7 +90,7 @@ params = st.experimental_get_query_params()
 # Obtém o valor do parâmetro 'variavel' da URL
 schemaUsuario = params.get('usuario', ['SEM_DADOS'])[0]  
 
-confs = Eny.secrets()
+confs = eny.secrets()
 
 if schemaUsuario == 'SEM_DADOS':
     st.subheader(_("Modo Inválido"))

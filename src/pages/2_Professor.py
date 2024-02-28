@@ -1,5 +1,5 @@
 import streamlit as st
-import Eny.confs as Eny
+import pages.Eny.eny as Eny
 import Eny.decode as jwt
 import base64
 
