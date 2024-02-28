@@ -68,11 +68,11 @@ def gepeto():
 
 
 def pygwalker():
-    import pygwalker as pyg
-    from pygwalker.api.streamlit import StreamlitRenderer, init_streamlit_comm
-    # Establish communication between pygwalker and streamlit
-    init_streamlit_comm()
+    from pygwalker.api.streamlit import StreamlitRenderer, init_streamlit_comm  
 
+    init_streamlit_comm()
+  
+    # Get an instance of pygwalker's renderer. You should cache this instance to effectively prevent the growth of in-process memory.
     @st.cache_resource
     def get_pyg_renderer() -> "StreamlitRenderer":
         # When you need to publish your app to the public, you should set the debug parameter to False to prevent other users from writing to your chart configuration file.
