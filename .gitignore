@@ -163,3 +163,7 @@ cython_debug/
 
 test.sh
 keys
+
+#pandasai
+cache
+exports

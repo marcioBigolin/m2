@@ -25,7 +25,11 @@ def gepeto():
     import matplotlib.pyplot as plt
     import os
 
-    api_token = ""
+    if eny.secrets()['openai']['key']:
+        st.session_state.openai_key = eny.secrets()['openai']['key']
+        st.session_state.prompt_history = []
+
+
     if "openai_key" not in st.session_state:
         with st.form("API key"):
             key = st.text_input("OpenAI Key", value="", type="password")
@@ -38,18 +42,23 @@ def gepeto():
     if "openai_key" in st.session_state:
     
         with st.form("Question"):
-            question = st.text_input("Question", value="", type="default")
+            question = st.text_input("Digite aqui uma pergunta sobre os dados", value="", type="default")
             submitted = st.form_submit_button("Gerar")
             if submitted:
                 with st.spinner():
                     llm = OpenAI(api_token=st.session_state.openai_key)
-                    pandas_ai = SmartDataframe(llm)
-                    x = pandas_ai.run(df, prompt=question)
+                    pandas_ai = SmartDataframe(df, config={
+                    "llm": llm, 
+                    "conversational": False, 
+                    "enable_cache": True,
+                    })
 
-                    if os.path.isfile('temp_chart.png'):
-                        im = plt.imread('temp_chart.png')
+                    x = pandas_ai.chat(question)
+
+                    if os.path.isfile('exports/charts/temp_chart.png'):
+                        im = plt.imread('exports/charts/temp_chart.png')
                         st.image(im)
-                        os.remove('temp_chart.png')
+                        os.remove('exports/charts/temp_chart.png')
 
                     if x is not None:
                         st.write(x)
