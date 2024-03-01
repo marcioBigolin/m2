@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "enyalius"
+version = "1.0.0"
+description = "Um simples leitor de artigos do blog da TreinaWeb"
+readme = "README.md"
+authors = [
+    { name = "Marcio Bigolin", email = "marcio.bigolinn@gmail.com" }
+]
+license = { file = "LICENSE" }
+classifiers = [
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: Portuguese (Brazilian)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Utilities",
+]
+keywords = ["twblog", "treinaweb", "blog", "terminal", "cli"]
+requires-python = ">=3.9"
+dependencies = ["requests>=2.28.1", "html2text>=2020.1.16", "beautifulsoup4>=4.11.1"]

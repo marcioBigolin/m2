@@ -1,0 +1,1 @@
+https://www.treinaweb.com.br/blog/empacotando-e-publicando-pacotes-python-no-pypi

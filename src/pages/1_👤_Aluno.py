@@ -1,6 +1,6 @@
+import enyalius as eny
 import streamlit as st
 import pandas as pd
-import enyalius as eny
 
 
 st.set_page_config(page_title="Análise por aluno", page_icon="📈", layout="wide")
