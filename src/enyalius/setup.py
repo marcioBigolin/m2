@@ -3,7 +3,6 @@ from setuptools import setup
 setup(
     name="enyalius",
     version="1.0",
-    description="Meu módulo local",
-    #packages=["__init__"],
-    py_modules=["enyalus"],
+    description="Módulo enyalius uma lib python para todas as necessidades haha",
+    py_modules=["__init__"],
 )
