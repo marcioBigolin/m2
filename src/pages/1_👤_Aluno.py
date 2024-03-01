@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-from locale import gettext as _
-
 import enyalius as eny
 
 
@@ -10,8 +8,6 @@ st.set_page_config(page_title="Análise por aluno", page_icon="📈", layout="wi
 params = st.query_params
 schemaUsuario = params.get('usuario', 'moodle_marcio2')  
 aluno = params.get('aluno', '276')
-
-
 
 
 def dataFrame(aluno):

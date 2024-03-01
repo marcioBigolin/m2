@@ -1,6 +1,7 @@
-import os
+
 
 def arquivoConf(nome_arquivo):
+    import os
     
     arquivo_local = nome_arquivo.replace('.toml', '.local.toml')
 
@@ -70,3 +71,5 @@ def decodeToken(token, secret_key):
         return jwt.decode(token, secret_key, algorithms=["HS256"])
     except jwt.DecodeError as e:
         return e
+    
+__all__ = ['loadLang', 'secrets', 'dataFrame', 'GET', 'decodeToken']
