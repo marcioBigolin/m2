@@ -58,8 +58,9 @@ def dataFrame(sqlw, columns):
 
 def GET(var, value=""):
     try:
+        import streamlit as st
         # Recebe os parâmetros via GET enquanto sem criptografia mandando direto (usar bearertok)
-        schemaUsuario = st.query_params.get('usuario', 'SEM_DADOS')
+        return st.query_params.get(var, value)
     except:    
         return value
 
