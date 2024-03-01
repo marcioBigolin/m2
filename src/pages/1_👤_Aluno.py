@@ -7,9 +7,9 @@ import enyalius as eny
 
 st.set_page_config(page_title="Análise por aluno", page_icon="📈", layout="wide")
 
-#params = st.query_params
-schemaUsuario = "moodle_marcio2" #params.get('usuario', 'moodle_marcio2')  
-aluno = 276 #params.get('aluno', '276')
+params = st.query_params
+schemaUsuario = params.get('usuario', 'moodle_marcio2')  
+aluno = params.get('aluno', '276')
 
 
 

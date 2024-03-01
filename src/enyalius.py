@@ -45,6 +45,23 @@ def conecta():
 
     return create_engine(f"postgresql://{user}:{password}@{host}:5432/{database}").connect()
 
+def dataFrame(sqlw, columns):
+    import pandas as pd
+    from sqlalchemy import text
+    conn = conecta()
+
+    # Perform query.
+    sql_query =  pd.read_sql_query(sql=text(sqlw), con=conn)
+    df = pd.DataFrame(sql_query, columns)
+
+    return df
+
+def GET(var, value=""):
+    try:
+        # Recebe os parâmetros via GET enquanto sem criptografia mandando direto (usar bearertok)
+        schemaUsuario = st.query_params.get('usuario', 'SEM_DADOS')
+    except:    
+        return value
 
 def decodeToken(token, secret_key):
     import jwt

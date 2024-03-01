@@ -99,17 +99,17 @@ def pygwalker(df):
 
 #############################
 
-# Recebe os parâmetros via GET enquanto sem criptografia mandando direto (usar bearertok)
-schemaUsuario = st.query_params.get('usuario', 'SEM_DADOS')
+try:
+    # Recebe os parâmetros via GET enquanto sem criptografia mandando direto (usar bearertok)
+    schemaUsuario = st.query_params.get('usuario', 'SEM_DADOS')
+except:
+    schemaUsuario = "SEM_DADOS"
 
 
 confs = eny.secrets()
-
 if schemaUsuario == 'SEM_DADOS':
     st.subheader(_("Modo Inválido"))
     st.markdown(f"Acesse pelo site do [MDI]({confs['geral']['mdilink']})")
-
-
 else:
 
     df = dataFrame()

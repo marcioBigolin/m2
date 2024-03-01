@@ -1,9 +1,10 @@
 pandas==1.5.3
-streamlit==1.3.1
-SQLAlchemy==2.0.27
-pandasai
+streamlit==1.31.1
+SQLAlchemy
+pandasai==2.0
 langchain
 pygwalker
 psycopg2-binary
 pyjwt
 python-gettext
+polars
