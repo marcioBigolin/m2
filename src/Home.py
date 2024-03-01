@@ -1,14 +1,20 @@
 import streamlit as st
 import pandas as pd
 import enyalius as eny
-from locale import gettext as _
+
+_ = eny.loadLang("Home", "pt-br")
+
+st.set_page_config(page_title= _("MDI - Análise com AI"), page_icon="🏡", layout="wide")
 
 
 def dataFrame():
-    conn=eny.conecta()
+    from sqlalchemy import text
+    conn = eny.conecta()
+
+    sqlw = f"SELECT * FROM {schemaUsuario}.fato_join;"
 
     # Perform query.
-    sql_query =  pd.read_sql_query (f"SELECT * FROM {schemaUsuario}.fato_join;", con=conn)
+    sql_query =  pd.read_sql_query(sql=text(sqlw), con=conn)
 
 
     df = pd.DataFrame(sql_query, columns = ['titulo', 'nome_completo', 'coh_frazier', 'coh_brunet', 'data_entrega'])
@@ -19,7 +25,7 @@ def dataFrame():
     return df
 
 
-def gepeto():
+def gepeto( df ):
     from pandasai import SmartDataframe
     from pandasai.llm.openai import OpenAI
     import matplotlib.pyplot as plt
@@ -33,17 +39,17 @@ def gepeto():
     if "openai_key" not in st.session_state:
         with st.form("API key"):
             key = st.text_input("OpenAI Key", value="", type="password")
-            if st.form_submit_button("Enviar"):
+            if st.form_submit_button(_("Enviar")):
                 st.session_state.openai_key = key
                 st.session_state.prompt_history = []
-                st.success('API KEY Salva só alegria!') #Validar entrada vazia
+                st.success(_('API KEY Salva só alegria!')) #Validar entrada vazia
 
     #Para não precisar clicar 2x no botão
     if "openai_key" in st.session_state:
     
         with st.form("Question"):
-            question = st.text_input("Digite aqui uma pergunta sobre os dados", value="", type="default")
-            submitted = st.form_submit_button("Gerar")
+            question = st.text_input(_("Digite aqui uma pergunta sobre os dados"), value="", type="default")
+            submitted = st.form_submit_button(_("Gerar"))
             if submitted:
                 with st.spinner():
                     llm = OpenAI(api_token=st.session_state.openai_key)
@@ -64,19 +70,18 @@ def gepeto():
                         st.write(x)
 
                     st.session_state.prompt_history.append(question)
-
     
 
-        st.subheader("Prompt history:")
+        st.subheader(_("Prompt history:"))
         st.write(st.session_state.prompt_history)
 
         if "prompt_history" in st.session_state.prompt_history and len(st.session_state.prompt_history) > 0:
-            if st.button("Limpar"):
+            if st.button(_("Limpar")):
                 st.session_state.prompt_history = []
                 st.session_state.df = None
 
 
-def pygwalker():
+def pygwalker(df):
     from pygwalker.api.streamlit import StreamlitRenderer, init_streamlit_comm  
 
     init_streamlit_comm()
@@ -95,9 +100,8 @@ def pygwalker():
 #############################
 
 # Recebe os parâmetros via GET enquanto sem criptografia mandando direto (usar bearertok)
-params = st.experimental_get_query_params()
-# Obtém o valor do parâmetro 'variavel' da URL
-schemaUsuario = params.get('usuario', ['SEM_DADOS'])[0]  
+schemaUsuario = st.query_params.get('usuario', 'SEM_DADOS')
+
 
 confs = eny.secrets()
 
@@ -112,12 +116,11 @@ else:
 
 
     #configure layout
-    st.set_page_config(page_title= _("MDI - Análise com AI"), page_icon="🏡", layout="wide")
     st.subheader(_("Explore os dados utilizando Inteligência artificial"))
     st.markdown("##")
 
     # Criar uma seleção dos anos na barra lateral do dashboard
-    st.sidebar.title("Filtre os dados")
+    st.sidebar.title(_("Filtre os dados"))
     years= st.sidebar.multiselect(
         _('Quais anos deseja analizar?'),
         options=df["Year"].unique(),
@@ -127,9 +130,8 @@ else:
     df=df[mask]
     st.sidebar.image("./assets/logo.png", width=200)
 
-    tab1, tab2, tab3, tab4 = st.tabs(["Dashboard", "ChatGPT", "Gerador de gráfico", "Entendendo meus dados"])
+    tab1, tab2, tab3, tab4 = st.tabs([_("Dashboard"), "ChatGPT", "Gerador de gráfico", _("Entendendo meus dados")])
 
-    df = dataFrame()
 
     with tab1:
         st.title("Resumo")
@@ -141,14 +143,14 @@ else:
         cols[2].metric("Humidity", "86%", "4%")
 
     with tab2:
-        st.header("IA Generativa")
+        st.header(_("IA Generativa"))
         st.dataframe(df)
-        gepeto()
+        gepeto(df)
 
     with tab3:
-        st.header("Modo clássico para a criação de gráficos")
-        pygwalker()
+        st.header(_("Modo clássico para a criação de gráficos"))
+        pygwalker(df)
 
     with tab4:
-        st.title("Como analisar o dados no MDI/MDA")
-        st.text("O MDI utiliza um modelo estrela (Kimball/Imon) clássico. O que significa que o modelo foi reestruturado para consulta.")
+        st.title(_("Como analisar o dados no MDI/MDA"))
+        st.markdown(_("O MDI utiliza um modelo estrela (Kimball/Imon) clássico. O que significa que o modelo foi reestruturado para consulta."))

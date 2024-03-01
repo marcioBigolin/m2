@@ -1,0 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-02-29 20:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/Home.py:13
+msgid "MDI - Análise com AI"
+msgstr "MDI - Análisis con AI"
+
+#: src/Home.py:48
+msgid "API KEY Salva só alegria!"
+msgstr "API KEY Guardada, ¡solo alegría!"
+
+#: src/Home.py:54
+msgid "Digite aqui uma pergunta sobre os dados"
+msgstr "Escribe aquí una pregunta sobre los datos"
+
+#: src/Home.py:55
+msgid "Gerar"
+msgstr "Generar"
+
+#: src/Home.py:78
+msgid "Prompt history:"
+msgstr "Historial de comandos:"
+
+#: src/Home.py:112
+msgid "Modo Inválido"
+msgstr "Modo Inválido"
+
+#: src/Home.py:122
+msgid "Explore os dados utilizando Inteligência artificial"
+msgstr "Explore los datos utilizando Inteligencia artificial"
+
+#: src/Home.py:126
+msgid "Filtre os dados"
+msgstr "Filtra los datos"
+
+#: src/Home.py:128
+msgid "Quais anos deseja analisar?"
+msgstr "¿Qué años desea analizar?"
+
+#: src/Home.py:136
+msgid "Dashboard"
+msgstr "Tablero"
+
+#: src/Home.py:136
+msgid "Entendendo meus dados"
+msgstr "Entendiendo mis datos"

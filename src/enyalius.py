@@ -1,5 +1,7 @@
+import os
+
 def arquivoConf(nome_arquivo):
-    import os
+    
     arquivo_local = nome_arquivo.replace('.toml', '.local.toml')
 
     if os.path.isfile(arquivo_local):
@@ -7,6 +9,16 @@ def arquivoConf(nome_arquivo):
     else:
         return nome_arquivo
 
+def loadLang(file, lang):
+    #internacionalização
+    import gettext 
+    try:
+        localizator = gettext.translation(file, localedir="locales", languages=[lang])
+        localizator.install()
+        return localizator.gettext
+    except:
+        return gettext.gettext
+    
 def secrets():
     import toml
 
@@ -31,7 +43,7 @@ def conecta():
     user = confs['connections']['postgresql']['username']
     password = confs['connections']['postgresql']['password']
 
-    return create_engine(f"postgresql://{user}:{password}@{host}:5432/{database}")
+    return create_engine(f"postgresql://{user}:{password}@{host}:5432/{database}").connect()
 
 
 def decodeToken(token, secret_key):
