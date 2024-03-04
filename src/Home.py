@@ -99,14 +99,22 @@ def pygwalker(df):
 
 #############################
 
+confs = eny.secrets()
+
 try:
-    # Recebe os parâmetros via GET enquanto sem criptografia mandando direto (usar bearertok)
+    data = eny.GET('encode')
+    jwt = eny.decodeToken(data, confs['jwt'])
+
+    st.text(jwt)
+
     schemaUsuario = st.query_params.get('usuario', 'SEM_DADOS')
 except:
-    schemaUsuario = "SEM_DADOS"
+    if "schema" in eny.secrets()['dev']:
+        schemaUsuario = eny.secrets()['dev']['schema']
+    else:
+        schemaUsuario = "SEM_DADOS"
 
 
-confs = eny.secrets()
 if schemaUsuario == 'SEM_DADOS':
     st.subheader(_("Modo Inválido"))
     st.markdown(f"Acesse pelo site do [MDI]({confs['geral']['mdilink']})")
@@ -135,12 +143,17 @@ else:
 
     with tab1:
         st.title("Resumo")
-        st.text("Esse painel apresentamos os dados mais comuns das suas turmas.")
+        st.write(_("Pequeno resumo dos dados importados pelo MDI."))
+
+        from datetime import datetime, timedelta
+        data_atual = datetime.now() - timedelta(days=360)
+        #dfFilter = df.filter(lambda row: row["data_entrega"] >= data_atual)
 
         cols = st.columns(3)
-        cols[0].metric("Total de estudantes", "70 °F", "1.2 °F")
-        cols[1].metric("Wind", "9 mph", "-8%")
-        cols[2].metric("Humidity", "86%", "4%")
+        #cols[0].metric("Total de estudantes", df["nome_completo"].nunique(), dfFilter["nome_completo"].nunique())
+        cols[0].metric("Estudantes", "9 mph", "-8%")
+        cols[1].metric("Atividades", "9 mph", "-8%")
+        cols[2].metric("Turmas acompanhadas", "86%", "4%")
 
     with tab2:
         st.header(_("IA Generativa"))

@@ -87,13 +87,10 @@ def decriptaAES(data, secret_key, separator="::"):
 
     def aes_decrypt(ciphertext, key):
         from cryptography.hazmat.primitives import padding
-        st.text(ciphertext)
         eData, iv = decode_data(ciphertext)
         ciphertext_bytes = base64.b64decode(eData)
 
-        st.text(iv)
-        st.text(ciphertext_bytes)
-
+  
         cipher = Cipher(algorithms.AES256(key), mode=modes.CBC(iv))
 
         decryptor = cipher.decryptor()
@@ -106,22 +103,15 @@ def decriptaAES(data, secret_key, separator="::"):
     hash_algorithm = hashlib.md5()
 
     # Atualiza o objeto hash com a chave
-    hash_algorithm.update(confs['jwt'].encode())
+    hash_algorithm.update(key.encode())
     # Gera o hash como um objeto bytes
     hashed_key = hash_algorithm.digest()
 
     # Converte o hash para hexadecimal
     key = hashed_key.hex()
 
-    st.text(key)
-    st.text(bytes(key, encoding='utf-8'))
+    decrypted_data = aes_decrypt(data, bytes(key, encoding='utf-8'))
 
-
-    st.text(decode)
-
-    decrypted_data = aes_decrypt(decode['data']['schema'], bytes(key, encoding='utf-8'))
-
-    st.text(decrypted_data.decode())  # Saída: "dado_confidencial"
-
+    return decrypted_data.decode()
 
 __all__ = ['loadLang', 'secrets', 'dataFrame', 'GET', 'decodeToken']
