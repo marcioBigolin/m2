@@ -26,23 +26,7 @@ def dataMundo():
 
 def analiseMetrica(data):
 
-    # Mapeamento de valores internos para rótulos
-    mapa_rotulos = {
-        'coh_frazier': 'Complexidade Sintática de Frazier',
-        'coh_brunet': 'Indice de Brunet',
-    }
 
-    # Inverta o dicionário para mapear rótulos para valores internos
-    mapa_valores = {v: k for k, v in mapa_rotulos.items()}
-
-    # Use os rótulos no selectbox
-    rotulo_selecionado = st.selectbox(
-        'Por favor, selecione a métrica que deseja visualizar:',
-        list(mapa_rotulos.values())
-    )
-
-    # Mapeie o rótulo de volta para o valor interno
-    metrica = mapa_valores[rotulo_selecionado]
 
     col1, col2 = st.columns([4, 8])
     with col1:
@@ -105,13 +89,33 @@ aluno = st.sidebar.selectbox(
 )
 df = dfMundo.loc[dfMundo['aluno_id'] == aluno]
 
+# Mapeamento de valores internos para rótulos
+mapa_rotulos = {
+    'coh_frazier': 'Complexidade Sintática de Frazier',
+    'coh_brunet': 'Indice de Brunet',
+}
 
+# Inverta o dicionário para mapear rótulos para valores internos
+mapa_valores = {v: k for k, v in mapa_rotulos.items()}
+
+# Use os rótulos no selectbox
+rotulo_selecionado = st.sidebar.selectbox(
+    'Por favor, selecione a métrica que deseja visualizar:',
+    list(mapa_rotulos.values())
+)
+
+# Mapeie o rótulo de volta para o valor interno
+metrica = mapa_valores[rotulo_selecionado]
 
 st.title(f"Avaliação de {alunos_dict[aluno]}")
 
 indiTab, turmaTab, mundoTab = st.tabs(["Individual", "Turma", "Mundo"])
 
 with indiTab:
+    
+
+    st.line_chart(df[[metrica, 'data_entrega']], x='data_entrega', y=metrica)
+
     col1, col2 = st.columns([8, 4])
     with col1:
         st.header("Últimos registros")
@@ -120,9 +124,7 @@ with indiTab:
         st.header("Resumo")
         st.write(df.describe()) # ver de transformar isso em métricas
 
-    chart_data = df[['coh_frazier', 'coh_brunet']]
-
-    st.bar_chart(chart_data)
+ 
 
 with turmaTab:
     st.header("Análise de métricas por turma")
