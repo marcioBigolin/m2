@@ -57,34 +57,26 @@ with indiTab:
 
 with mundoTab:
     df = dataMundo()
-    df = pd.DataFrame(df[['coh_frazier']])  # Convert dictionary to DataFrame
 
-    media = df['coh_frazier'].mean()
+    media = dataFrame(aluno)['coh_frazier'].mean()
 
+    import plotly.graph_objects as go
+    
+    fig = go.Figure()
+    fig.add_trace(go.Histogram(x=df['coh_frazier']))
 
-    df_line = pd.DataFrame({'x_line': [media]})
-
-    st.vega_lite_chart(
-    {"df": df, "df_line": df_line},
-    {
-        "layer": [{
-            "data": {"name": "df"},
-            "mark": "bar",
-            "encoding": {
-                "x": {"field": "coh_frazier", "bin": True},
-                "y": {"aggregate": "count"}
-            }
-        },{
-            "data": {"name": "df_line"},
-            "mark": {
-                "type": "rule",
-                "strokeDash": [5, 5],
-                "strokeWidth": 3
-            },
-            "encoding": {
-                "x": {"field": "x_line"},
-                "color": {"value": "red"}
-            }
-        }]
-    }
+    fig.add_shape(
+        type="line",
+        x0=media,
+        x1=media,
+        y0=0,
+        y1=1,
+        yref="paper",
+        line=dict(
+            color="Red",
+            width=3,
+            dash="dashdot",
+        )
     )
+
+    st.plotly_chart(fig)
