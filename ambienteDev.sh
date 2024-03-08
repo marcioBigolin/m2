@@ -1,6 +1,9 @@
 #!/bin/sh
 
-#docker run -it -v $PWD:/app  streamlit run src/Home.py
-
-#versão local
-docker run -it -v $PWD:/app  gtechedu/streamlit  streamlit run src/Home.py
+if [ "$(docker ps -a | grep mda)" ]; then
+    echo "Container exists"
+    docker start mda
+else
+    echo "Container does not exist! Creating ..."
+    docker run -itd --name mda -v $PWD:/app -p 8501:8501 gtechedu/streamlit  streamlit run src/Home.py 
+fi
