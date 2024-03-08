@@ -29,7 +29,7 @@ def dataMundo():
     from sqlalchemy import text
     conn = eny.conecta()
 
-    sqlw = f"SELECT texto_extraido, coh_frazier, coh_brunet, data_entrega, nota, aluno_id FROM {schemaUsuario}.tarefa_fato "
+    sqlw = f"SELECT texto_extraido, coh_frazier, coh_brunet, data_entrega, nota, aluno_id FROM {schemaUsuario}.tarefa_fato WHERE LENGTH(texto_extraido) > 30;"
 
     # Perform query.
     sql_query =  pd.read_sql_query(sql=text(sqlw), con=conn)
@@ -57,25 +57,34 @@ with indiTab:
 
 with mundoTab:
     df = dataMundo()
-    st.dataframe(df)
+    df = pd.DataFrame(df[['coh_frazier']])  # Convert dictionary to DataFrame
+
+    media = df['coh_frazier'].mean()
+
+
+    df_line = pd.DataFrame({'x_line': [media]})
+
     st.vega_lite_chart(
-        df,
-        {
-            "layer": [{
-                "mark": "bar",
-                "encoding": {
+    {"df": df, "df_line": df_line},
+    {
+        "layer": [{
+            "data": {"name": "df"},
+            "mark": "bar",
+            "encoding": {
                 "x": {"field": "coh_frazier", "bin": True},
                 "y": {"aggregate": "count"}
-                }
-            },{
-                "mark": "rule",
-                "encoding": {
-                "x": {"value":"5"},
-                "color": {"value": "red"},
-                "strokeDash": [5, 5]
-                }
-            }]
-        }
-
+            }
+        },{
+            "data": {"name": "df_line"},
+            "mark": {
+                "type": "rule",
+                "strokeDash": [5, 5],
+                "strokeWidth": 3
+            },
+            "encoding": {
+                "x": {"field": "x_line"},
+                "color": {"value": "red"}
+            }
+        }]
+    }
     )
-
