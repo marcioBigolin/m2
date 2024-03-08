@@ -9,4 +9,5 @@ pyjwt
 python-gettext
 polars
 cryptography
+plotly
 src/enyalius
