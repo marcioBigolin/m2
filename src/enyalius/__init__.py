@@ -1,6 +1,6 @@
 
 
-def arquivoConf(nome_arquivo):
+def arquivoConf(nome_arquivo, extensao="toml"):
     import os
     
     arquivo_local = nome_arquivo.replace('.toml', '.local.toml')

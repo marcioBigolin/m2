@@ -117,7 +117,7 @@ except:
 
 if schemaUsuario == 'SEM_DADOS':
     st.subheader(_("Modo Inválido"))
-    st.markdown(f"Acesse pelo site do [MDI]({confs['geral']['mdilink']})")
+    st.markdown(f"{_('Acesse pelo site do')} [MDI]({confs['geral']['mdilink']})")
 else:
 
     df = dataFrame()
@@ -138,11 +138,11 @@ else:
     df=df[mask]
     st.sidebar.image("./assets/logo.png", width=200)
 
-    tab1, tab2, tab3, tab4 = st.tabs([_("Dashboard"), "ChatGPT", "Gerador de gráfico", _("Entendendo meus dados")])
+    tab1, tab2, tab3, tab4 = st.tabs([_("Dashboard"), "ChatGPT", _("Gerador de gráfico"), _("Entendendo meus dados")])
 
 
     with tab1:
-        st.title("Resumo")
+        st.title(_("Resumo"))
         st.write(_("Pequeno resumo dos dados importados pelo MDI."))
 
         from datetime import datetime, timedelta
@@ -151,8 +151,8 @@ else:
 
         cols = st.columns(3)
         #cols[0].metric("Total de estudantes", df["nome_completo"].nunique(), dfFilter["nome_completo"].nunique())
-        cols[0].metric("Estudantes", "9 mph", "-8%")
-        cols[1].metric("Atividades", "9 mph", "-8%")
+        cols[0].metric(_("Estudantes"), "9 mph", "-8%")
+        cols[1].metric(_("Atividades"), "9 mph", "-8%")
         cols[2].metric("Turmas acompanhadas", "86%", "4%")
 
     with tab2:
