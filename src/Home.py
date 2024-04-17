@@ -138,22 +138,23 @@ else:
     df=df[mask]
     st.sidebar.image("./assets/logo.png", width=200)
 
-    tab1, tab2, tab3, tab4 = st.tabs([_("Dashboard"), "ChatGPT", _("Gerador de gráfico"), _("Entendendo meus dados")])
+    #tab1, tab2, tab3, tab4 = st.tabs([_("Dashboard"), "ChatGPT", _("Gerador de gráfico"), _("Entendendo meus dados")])
+    tab2, tab3, tab4 = st.tabs([ "ChatGPT", _("Gerador de gráfico"), _("Entendendo meus dados")])
 
 
-    with tab1:
-        st.title(_("Resumo"))
-        st.write(_("Pequeno resumo dos dados importados pelo MDI."))
+    # with tab1:
+    #     st.title(_("Resumo"))
+    #     st.write(_("Pequeno resumo dos dados importados pelo MDI."))
 
-        from datetime import datetime, timedelta
-        data_atual = datetime.now() - timedelta(days=360)
-        #dfFilter = df.filter(lambda row: row["data_entrega"] >= data_atual)
+    #     from datetime import datetime, timedelta
+    #     data_atual = datetime.now() - timedelta(days=360)
+    #     #dfFilter = df.filter(lambda row: row["data_entrega"] >= data_atual)
 
-        cols = st.columns(3)
-        #cols[0].metric("Total de estudantes", df["nome_completo"].nunique(), dfFilter["nome_completo"].nunique())
-        cols[0].metric(_("Estudantes"), "9 mph", "-8%")
-        cols[1].metric(_("Atividades"), "9 mph", "-8%")
-        cols[2].metric("Turmas acompanhadas", "86%", "4%")
+    #     cols = st.columns(3)
+    #     #cols[0].metric("Total de estudantes", df["nome_completo"].nunique(), dfFilter["nome_completo"].nunique())
+    #     cols[0].metric(_("Estudantes"), "9 mph", "-8%")
+    #     cols[1].metric(_("Atividades"), "9 mph", "-8%")
+    #     cols[2].metric("Turmas acompanhadas", "86%", "4%")
 
     with tab2:
         st.header(_("IA Generativa"))
