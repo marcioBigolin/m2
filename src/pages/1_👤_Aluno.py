@@ -114,7 +114,7 @@ metrica = mapa_valores[rotulo_selecionado]
 
 st.title(f"Avaliação de {alunos_dict[aluno]}")
 
-indiTab, turmaTab, mundoTab = st.tabs(["Individual", "Turma", "Mundo"])
+indiTab, turmaTab, mundoTab = st.tabs(["Individual", "Turma", "Minhas as turmas"])
 
 with indiTab:
     
