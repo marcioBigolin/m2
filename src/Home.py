@@ -17,7 +17,7 @@ def dataFrame():
     sql_query =  pd.read_sql_query(sql=text(sqlw), con=conn)
 
 
-    df = pd.DataFrame(sql_query, columns = ['titulo', 'nome_completo', 'coh_frazier', 'coh_brunet', 'data_entrega'])
+    df = pd.DataFrame(sql_query, columns = ['titulo', 'nome_completo', 'coh_frazier', 'coh_brunet', 'data_entrega', 'id_tarefa', 'id_turma'])
     df["Year"] = df["data_entrega"].apply(lambda x: str(x.year) )
     df = df.sort_values("Year")
 
@@ -105,3 +105,4 @@ else:
     with tab3:
         st.title(_("Como analisar o dados no MDI/MDA"))
         st.markdown(_("O MDI utiliza um modelo estrela (Kimball/Imon) clássico. O que significa que o modelo foi reestruturado para consulta."))
+        st.dataframe(df)
