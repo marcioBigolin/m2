@@ -95,8 +95,8 @@ else:
 
         cols = st.columns(3)
         cols[0].metric(_("Estudantes"), df["nome_completo"].nunique(), dfFilter["nome_completo"].nunique())
-        cols[1].metric(_("Atividades"), "9 mph", "-8%")
-        cols[2].metric("Turmas acompanhadas", "86%", "4%")
+        cols[1].metric(_("Atividades"), df["titulo"].nunique(), dfFilter["titulo"].nunique())
+        cols[2].metric("Turmas acompanhadas", "0", "0")
 
     with tab2:
         st.header(_("Modo clássico para a criação de gráficos"))
