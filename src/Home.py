@@ -4,7 +4,7 @@ import enyalius as eny
 
 _ = eny.loadLang("Home", "pt-br")
 
-st.set_page_config(page_title= _("MDI - Análise com AI"), page_icon="🏡", layout="wide")
+st.set_page_config(page_title= _("MDI - Análise de dados"), page_icon="🏡", layout="wide")
 
 
 def dataFrame():
@@ -23,62 +23,6 @@ def dataFrame():
 
 
     return df
-
-
-def gepeto( df ):
-    from pandasai import SmartDataframe
-    from pandasai.llm.openai import OpenAI
-    import matplotlib.pyplot as plt
-    import os
-
-    if "key" in eny.secrets()['openai']:
-        st.session_state.openai_key = eny.secrets()['openai']['key']
-        st.session_state.prompt_history = []
-
-
-    if "openai_key" not in st.session_state:
-        with st.form("API key"):
-            key = st.text_input("OpenAI Key", value="", type="password")
-            if st.form_submit_button(_("Enviar")):
-                st.session_state.openai_key = key
-                st.session_state.prompt_history = []
-                st.success(_('API KEY Salva só alegria!')) #Validar entrada vazia
-
-    #Para não precisar clicar 2x no botão
-    if "openai_key" in st.session_state:
-    
-        with st.form("Question"):
-            question = st.text_input(_("Digite aqui uma pergunta sobre os dados"), value="", type="default")
-            submitted = st.form_submit_button(_("Gerar"))
-            if submitted:
-                with st.spinner():
-                    llm = OpenAI(api_token=st.session_state.openai_key)
-                    pandas_ai = SmartDataframe(df, config={
-                    "llm": llm, 
-                    "conversational": False, 
-                    "enable_cache": True,
-                    })
-
-                    x = pandas_ai.chat(question)
-
-                    if os.path.isfile('exports/charts/temp_chart.png'):
-                        im = plt.imread('exports/charts/temp_chart.png')
-                        st.image(im)
-                        os.remove('exports/charts/temp_chart.png')
-
-                    if x is not None:
-                        st.write(x)
-
-                    st.session_state.prompt_history.append(question)
-    
-
-        st.subheader(_("Prompt history:"))
-        st.write(st.session_state.prompt_history)
-
-        if "prompt_history" in st.session_state.prompt_history and len(st.session_state.prompt_history) > 0:
-            if st.button(_("Limpar")):
-                st.session_state.prompt_history = []
-                st.session_state.df = None
 
 
 def pygwalker(df):
@@ -124,47 +68,40 @@ else:
 
 
     #configure layout
-    st.subheader(_("Explore os dados utilizando Inteligência artificial"))
+    st.subheader(_("Explore os dados atráves do Dashboard interativo"))
     st.markdown("##")
 
-    # Criar uma seleção dos anos na barra lateral do dashboard
-    st.sidebar.title(_("Filtre os dados"))
-    years= st.sidebar.multiselect(
-        _('Quais anos deseja analizar?'),
-        options=df["Year"].unique(),
-        default=df["Year"].unique())
+    # # Criar uma seleção dos anos na barra lateral do dashboard
+    # st.sidebar.title(_("Filtre os dados"))
+    # years= st.sidebar.multiselect(
+    #     _('Quais anos deseja analizar?'),
+    #     options=df["Year"].unique(),
+    #     default=df["Year"].unique())
 
-    mask=df["Year"].isin(years)
-    df=df[mask]
+    # mask=df["Year"].isin(years)
+    # df=df[mask]
     st.sidebar.image("./assets/logo.png", width=200)
 
-    #tab1, tab2, tab3, tab4 = st.tabs([_("Dashboard"), "ChatGPT", _("Gerador de gráfico"), _("Entendendo meus dados")])
-    tab2, tab3, tab4 = st.tabs([ "ChatGPT", _("Gerador de gráfico"), _("Entendendo meus dados")])
+    tab1, tab2, tab3 = st.tabs([_("Dashboard"), _("Gerador de gráfico"), _("Entendendo meus dados")])
+    
 
+    with tab1:
+        st.title(_("Resumo"))
+        st.write(_("Pequeno resumo dos dados importados pelo MDI."))
 
-    # with tab1:
-    #     st.title(_("Resumo"))
-    #     st.write(_("Pequeno resumo dos dados importados pelo MDI."))
+        from datetime import datetime, timedelta
+        data_atual = datetime.now() - timedelta(days=660)
+        dfFilter =  df.loc[df['data_entrega'] >= data_atual]
 
-    #     from datetime import datetime, timedelta
-    #     data_atual = datetime.now() - timedelta(days=360)
-    #     #dfFilter = df.filter(lambda row: row["data_entrega"] >= data_atual)
-
-    #     cols = st.columns(3)
-    #     #cols[0].metric("Total de estudantes", df["nome_completo"].nunique(), dfFilter["nome_completo"].nunique())
-    #     cols[0].metric(_("Estudantes"), "9 mph", "-8%")
-    #     cols[1].metric(_("Atividades"), "9 mph", "-8%")
-    #     cols[2].metric("Turmas acompanhadas", "86%", "4%")
+        cols = st.columns(3)
+        cols[0].metric(_("Estudantes"), df["nome_completo"].nunique(), dfFilter["nome_completo"].nunique())
+        cols[1].metric(_("Atividades"), "9 mph", "-8%")
+        cols[2].metric("Turmas acompanhadas", "86%", "4%")
 
     with tab2:
-        st.header(_("IA Generativa"))
-        st.dataframe(df)
-        gepeto(df)
-
-    with tab3:
         st.header(_("Modo clássico para a criação de gráficos"))
         pygwalker(df)
 
-    with tab4:
+    with tab3:
         st.title(_("Como analisar o dados no MDI/MDA"))
         st.markdown(_("O MDI utiliza um modelo estrela (Kimball/Imon) clássico. O que significa que o modelo foi reestruturado para consulta."))

@@ -1,0 +1,201 @@
+{
+  "canvas": {
+    "version": "2.2.13",
+    "width": 2000,
+    "height": 2000,
+    "scrollTop": 0,
+    "scrollLeft": 0,
+    "zoomLevel": 1,
+    "show": {
+      "tableComment": true,
+      "columnComment": true,
+      "columnDataType": true,
+      "columnDefault": true,
+      "columnAutoIncrement": false,
+      "columnPrimaryKey": true,
+      "columnUnique": false,
+      "columnNotNull": true,
+      "relationship": true
+    },
+    "database": "PostgreSQL",
+    "databaseName": "",
+    "canvasType": "ERD",
+    "language": "GraphQL",
+    "tableCase": "pascalCase",
+    "columnCase": "camelCase",
+    "highlightTheme": "VS2015",
+    "bracketType": "none",
+    "setting": {
+      "relationshipDataTypeSync": true,
+      "relationshipOptimization": false,
+      "columnOrder": [
+        "columnName",
+        "columnDataType",
+        "columnNotNull",
+        "columnUnique",
+        "columnAutoIncrement",
+        "columnDefault",
+        "columnComment"
+      ]
+    },
+    "pluginSerializationMap": {}
+  },
+  "table": {
+    "tables": [
+      {
+        "id": "21c36aaa-8d3b-4289-8351-11b22273405b",
+        "name": "chat_sessao",
+        "comment": "Registra todas as conversas com o PandasAI de forma mais organizada",
+        "columns": [
+          {
+            "id": "82a18112-281c-46ff-9c33-14604f4a3a41",
+            "name": "id",
+            "comment": "",
+            "dataType": "bigserial",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "26d4576e-a0ba-4dd8-b31e-1a582fb97316",
+            "name": "usuario_id",
+            "comment": "",
+            "dataType": "bigint",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 65.29705810546875,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 156,
+          "top": 76,
+          "zIndex": 70,
+          "widthName": 75.20304870605469,
+          "widthComment": 120
+        },
+        "visible": true
+      },
+      {
+        "id": "e481b5d7-38a6-4f7a-a7ad-1b87a5ac0586",
+        "name": "chat_registro",
+        "comment": "",
+        "columns": [
+          {
+            "id": "9511c98d-afec-4c76-b44a-f9c0340fdb27",
+            "name": "pergunta",
+            "comment": "",
+            "dataType": "character varying",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 108.2620849609375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "7c947c48-a79a-4b20-ad67-d24facfe1059",
+            "name": "pergunta_horario",
+            "comment": "",
+            "dataType": "timestamp with time zone",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 109.27609252929688,
+              "widthComment": 60,
+              "widthDataType": 161.21115112304688,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "efcc1783-a6ec-45c8-90cc-5bc69302d947",
+            "name": "resposta",
+            "comment": "",
+            "dataType": "character varying",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 108.2620849609375,
+              "widthDefault": 60
+            }
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 612,
+          "top": 145,
+          "zIndex": 60,
+          "widthName": 81.71607971191406,
+          "widthComment": 60
+        },
+        "visible": true
+      }
+    ],
+    "indexes": []
+  },
+  "memo": {
+    "memos": []
+  },
+  "relationship": {
+    "relationships": []
+  }
+}

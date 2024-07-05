@@ -16,11 +16,11 @@ def dataMundo():
     from sqlalchemy import text
     conn = eny.conecta()
 
-    sqlw = f"SELECT texto_extraido, coh_frazier, coh_brunet, data_entrega, nota, turma_id, aluno_id, nome_completo FROM {schemaUsuario}.tarefa_fato tf INNER JOIN {schemaUsuario}.aluno a ON a.id = aluno_id WHERE LENGTH(texto_extraido) > 30;"
+    sqlw = f"SELECT tf.id as id, texto_extraido, coh_frazier, coh_brunet, data_entrega, nota, turma_id, aluno_id, nome_completo FROM {schemaUsuario}.tarefa_fato tf INNER JOIN {schemaUsuario}.aluno a ON a.id = aluno_id WHERE LENGTH(texto_extraido) > 30;"
 
     # Perform query.
     sql_query =  pd.read_sql_query(sql=text(sqlw), con=conn)
-    df = pd.DataFrame(sql_query, columns = ['titulo', 'texto_extraido', 'coh_frazier', 'coh_brunet', 'data_entrega', 'nota', 'nome_completo', 'aluno_id'])
+    df = pd.DataFrame(sql_query, columns = ['id', 'titulo', 'texto_extraido', 'coh_frazier', 'coh_brunet', 'data_entrega', 'nota', 'nome_completo', 'aluno_id'])
 
     return df
 
@@ -87,7 +87,12 @@ aluno = st.sidebar.selectbox(
         index=aluno_index,
         format_func=lambda x: alunos_dict[x]
 )
+
+#filtrando o dataFrame do mundo para apenas o aluno 
 df = dfMundo.loc[dfMundo['aluno_id'] == aluno]
+base_url = "http://localhost/mdaToSobek/"
+df['sobek'] = [f'<a href="{base_url}{id_}/{schemaUsuario}" target="_blank">Explore no Sobek</a>' for id_ in df['id']]
+
 
 # Mapeamento de valores internos para rótulos
 mapa_rotulos = {
@@ -113,18 +118,20 @@ indiTab, turmaTab, mundoTab = st.tabs(["Individual", "Turma", "Mundo"])
 
 with indiTab:
     
-
-    st.line_chart(df[[metrica, 'data_entrega']], x='data_entrega', y=metrica)
-
     col1, col2 = st.columns([8, 4])
     with col1:
-        st.header("Últimos registros")
-        st.dataframe(df.head(10))
+        st.line_chart(df[[metrica, 'data_entrega']], x='data_entrega', y=metrica)
+     
     with col2:
         st.header("Resumo")
         st.write(df.describe()) # ver de transformar isso em métricas
+    st.header("Últimos registros")
+    st.markdown(
+            df.to_html(escape=False, index=False),
+            unsafe_allow_html=True)
+        #st.dataframe(df.head(10))
+  
 
- 
 
 with turmaTab:
     st.header("Análise de métricas por turma")
