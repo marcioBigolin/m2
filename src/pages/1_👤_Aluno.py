@@ -14,7 +14,7 @@ aluno = params.get('aluno', 101)
 
 def dataMundo():
     from sqlalchemy import text
-    conn = eny.conecta()
+    conn, engine = eny.conecta()
 
     sqlw = f"SELECT tf.id as id, texto_extraido, coh_frazier, coh_brunet, data_entrega, nota, turma_id, aluno_id, nome_completo FROM {schemaUsuario}.tarefa_fato tf INNER JOIN {schemaUsuario}.aluno a ON a.id = aluno_id WHERE LENGTH(texto_extraido) > 30;"
 
@@ -22,6 +22,8 @@ def dataMundo():
     sql_query =  pd.read_sql_query(sql=text(sqlw), con=conn)
     df = pd.DataFrame(sql_query, columns = ['id', 'titulo', 'texto_extraido', 'coh_frazier', 'coh_brunet', 'data_entrega', 'nota', 'nome_completo', 'aluno_id'])
 
+    # Close connection
+    eny.desconecta(conn, engine)
     return df
 
 def analiseMetrica(data):

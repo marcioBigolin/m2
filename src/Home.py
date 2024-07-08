@@ -4,12 +4,12 @@ import enyalius as eny
 
 _ = eny.loadLang("Home", "pt-br")
 
-st.set_page_config(page_title= _("MDI - Análise de dados"), page_icon="🏡", layout="wide")
+st.set_page_config(page_title= _("MDI - Análise de dados Textuais"), page_icon="🏡", layout="wide")
 
 
 def dataFrame():
     from sqlalchemy import text
-    conn = eny.conecta()
+    conn, engine = eny.conecta()
 
     sqlw = f"SELECT * FROM {schemaUsuario}.fato_join;"
 
@@ -18,6 +18,8 @@ def dataFrame():
 
 
     df = pd.DataFrame(sql_query, columns = ['titulo', 'nome_completo', 'coh_frazier', 'coh_brunet', 'data_entrega', 'id_tarefa', 'id_turma'])
+    eny.desconecta(conn, engine)
+
     df["Year"] = df["data_entrega"].apply(lambda x: str(x.year) )
     df = df.sort_values("Year")
 
@@ -87,7 +89,7 @@ else:
 
     with tab1:
         st.title(_("Resumo"))
-        st.write(_("Pequeno resumo dos dados importados pelo MDI."))
+        st.write(_("Pequeno resumo dos dados textuais importados pelo MDI."))
 
         from datetime import datetime, timedelta
         data_atual = datetime.now() - timedelta(days=660)
@@ -104,5 +106,7 @@ else:
 
     with tab3:
         st.title(_("Como analisar o dados no MDI/MDA"))
-        st.markdown(_("O MDI utiliza um modelo estrela (Kimball/Imon) clássico. O que significa que o modelo foi reestruturado para consulta."))
+        st.markdown(_("O MDI utiliza um modelo estrela (Kimball/Imon) clássico. O que significa que o modelo foi reestruturado para consulta. "))
+        st.markdown(_("Basicamente os dados importados ficam na estrutura abaixo como você pode analisar"))
+
         st.dataframe(df)

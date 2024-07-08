@@ -34,17 +34,24 @@ def secrets():
     return dados
 
 def conecta():
+    # if connection != False:
+    #     return connection
+    
     from sqlalchemy import create_engine
 
     confs = secrets()
-
     # Recuperar os detalhes de conexão do banco de dados
     host = confs['connections']['postgresql']['host']
     database = confs['connections']['postgresql']['database']
     user = confs['connections']['postgresql']['username']
     password = confs['connections']['postgresql']['password']
+    engine = create_engine(f"postgresql://{user}:{password}@{host}:5432/{database}")
+    connection = engine.connect()
+    return connection, engine
 
-    return create_engine(f"postgresql://{user}:{password}@{host}:5432/{database}").connect()
+def desconecta(connection, engine):
+    connection.close()
+    engine.dispose()
 
 def dataFrame(sqlw, columns):
     import pandas as pd
