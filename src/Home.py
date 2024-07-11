@@ -12,6 +12,7 @@ def dataFrame():
     conn, engine = eny.conecta()
 
     sqlw = f"SELECT * FROM {schemaUsuario}.fato_join;"
+    print(sqlw)
 
     # Perform query.
     sql_query =  pd.read_sql_query(sql=text(sqlw), con=conn)
@@ -19,6 +20,9 @@ def dataFrame():
 
     df = pd.DataFrame(sql_query, columns = ['titulo', 'nome_completo', 'coh_frazier', 'coh_brunet', 'data_entrega', 'id_tarefa', 'id_turma'])
     eny.desconecta(conn, engine)
+
+    # Alterando os rótulos das colunas
+        
 
     df["Year"] = df["data_entrega"].apply(lambda x: str(x.year) )
     df = df.sort_values("Year")
@@ -109,4 +113,5 @@ else:
         st.markdown(_("O MDI utiliza um modelo estrela (Kimball/Imon) clássico. O que significa que o modelo foi reestruturado para consulta. "))
         st.markdown(_("Basicamente os dados importados ficam na estrutura abaixo como você pode analisar"))
 
+        df.columns = ['Tema', 'Nome do aluno', 'Indice Frazier', 'Indice Brunet', 'data_entrega', 'Task ID', 'Class ID', 'ano']
         st.dataframe(df)
