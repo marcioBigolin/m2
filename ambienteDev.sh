@@ -5,5 +5,5 @@ if [ "$(docker ps -a | grep mda)" ]; then
     docker start mda
 else
     echo "Container does not exist! Creating ..."
-    docker run -itd --name mda -v $PWD:/app -p 8501:8501 gtechedu/streamlit  streamlit run src/Home.py 
+    docker run -itd --network mdinet --name mda -v $PWD:/app -p 8501:8501 gtechedu/streamlit  streamlit run src/Home.py 
 fi

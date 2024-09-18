@@ -53,14 +53,12 @@ confs = eny.secrets()
 
 try:
     data = eny.GET('encode')
-    jwt = eny.decodeToken(data, confs['jwt'])
-
-    st.text(jwt)
-
-    schemaUsuario = st.query_params.get('usuario', 'SEM_DADOS')
-except:
+    jwt = eny.decodeToken(data, confs['geral']['jwt'])   
+    schemaUsuario = eny.decriptaAES(jwt['data']['schema'], confs['geral']['jwt'])
+except Exception as e:
+    st.text(e)
     if "schema" in eny.secrets()['dev']:
-        schemaUsuario = eny.secrets()['dev']['schema']
+        schemaUsuario = eny.secrets()['dev']['schema'] 
     else:
         schemaUsuario = "SEM_DADOS"
 
@@ -69,7 +67,7 @@ if schemaUsuario == 'SEM_DADOS':
     st.subheader(_("Modo Inválido"))
     st.markdown(f"{_('Acesse pelo site do')} [MDI]({confs['geral']['mdilink']})")
 else:
-
+    st.text(schemaUsuario)
     df = dataFrame()
 
 
@@ -87,6 +85,7 @@ else:
     # mask=df["Year"].isin(years)
     # df=df[mask]
     st.sidebar.image("./assets/logo.png", width=200)
+    st.sidebar.markdown(f"<a href='{confs['geral']['mdilink']}'>[Acessar importação]<a>", True)
 
     tab1, tab2, tab3 = st.tabs([_("Dashboard"), _("Gerador de gráfico"), _("Entendendo meus dados")])
     

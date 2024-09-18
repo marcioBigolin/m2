@@ -86,7 +86,6 @@ def decriptaAES(data, secret_key, separator="::"):
     def decode_data(cript):
         
         data_b64 = base64.b64decode(cript)
-        st.text(data_b64)
 
         eData, iv = data_b64.split(b'::', 1)
         return eData, iv
@@ -110,7 +109,7 @@ def decriptaAES(data, secret_key, separator="::"):
     hash_algorithm = hashlib.md5()
 
     # Atualiza o objeto hash com a chave
-    hash_algorithm.update(key.encode())
+    hash_algorithm.update(secret_key.encode())
     # Gera o hash como um objeto bytes
     hashed_key = hash_algorithm.digest()
 
