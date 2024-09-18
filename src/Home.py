@@ -54,7 +54,7 @@ confs = eny.secrets()
 try:
     data = eny.GET('encode')
     jwt = eny.decodeToken(data, confs['geral']['jwt'])   
-    schemaUsuario = eny.decriptaAES(jwt['data']['schema'], confs['geral']['jwt'])
+    schemaUsuario = 'moodle_' + eny.decriptaAES(jwt['data']['schema'], confs['geral']['jwt'])
 except Exception as e:
     st.text(e)
     if "schema" in eny.secrets()['dev']:
