@@ -8,22 +8,25 @@ _ = eny.loadLang("Home", "pt-br")
 st.set_page_config(page_title="Análise por aluno", page_icon="📈", layout="wide")
 
 params = st.query_params
-schemaUsuario = params.get('usuario', 'moodle_marcio2')  
+schemaUsuario = params.get('usuario', 'demo')  
 aluno = params.get('aluno', 101)
 
 
 def dataMundo():
-    from sqlalchemy import text
-    conn, engine = eny.conecta()
+    if schemaUsuario == 'demo':
+        df = eny.df_from_disk('./assets/demo.csv')
+    else:
+        from sqlalchemy import text
+        conn, engine = eny.conecta()
 
-    sqlw = f"SELECT tf.id as id, texto_extraido, coh_frazier, coh_brunet, data_entrega, nota, turma_id, aluno_id, nome_completo FROM {schemaUsuario}.tarefa_fato tf INNER JOIN {schemaUsuario}.aluno a ON a.id = aluno_id WHERE LENGTH(texto_extraido) > 30;"
+        sqlw = f"SELECT tf.id as id, texto_extraido, coh_frazier, coh_brunet, data_entrega, nota, turma_id, aluno_id, nome_completo FROM {schemaUsuario}.tarefa_fato tf INNER JOIN {schemaUsuario}.aluno a ON a.id = aluno_id WHERE LENGTH(texto_extraido) > 30;"
 
-    # Perform query.
-    sql_query =  pd.read_sql_query(sql=text(sqlw), con=conn)
-    df = pd.DataFrame(sql_query, columns = ['id', 'titulo', 'texto_extraido', 'coh_frazier', 'coh_brunet', 'data_entrega', 'nota', 'nome_completo', 'aluno_id'])
+        # Perform query.
+        sql_query =  pd.read_sql_query(sql=text(sqlw), con=conn)
+        df = pd.DataFrame(sql_query, columns = ['id', 'titulo', 'texto_extraido', 'coh_frazier', 'coh_brunet', 'data_entrega', 'nota', 'nome_completo', 'aluno_id'])
 
-    # Close connection
-    eny.desconecta(conn, engine)
+        # Close connection
+        eny.desconecta(conn, engine)
     return df
 
 def analiseMetrica(data):
@@ -100,6 +103,17 @@ df['sobek'] = [f'<a href="{base_url}{id_}/{schemaUsuario}" target="_blank">Explo
 mapa_rotulos = {
     'coh_frazier': 'Complexidade Sintática de Frazier',
     'coh_brunet': 'Indice de Brunet',
+    'coh_honore': 'Indice de honore',
+    'coh_negative_words': 'Palavras Negativas',
+    'coh_positive_words': 'Palavras Positivas',
+    # 'coh_dale_chall': 'Indice de Dale-Chall',
+    # 'coh_gunning_fog': 'Indice de Gunning-Fog',
+    # 'coh_lix': 'Indice de Lix',
+    # 'coh_smog': 'Indice de SMOG',
+    # 'coh_spache': 'Indice de Spache',
+    # 'coh_szigriszt': 'Indice de Szigriszt',
+    # 'coh_tuldava': 'Indice de Tuldava',
+
 }
 
 # Inverta o dicionário para mapear rótulos para valores internos

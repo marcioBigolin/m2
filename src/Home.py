@@ -31,6 +31,7 @@ def dataFrame():
     return df
 
 
+
 def pygwalker(df):
     from pygwalker.api.streamlit import StreamlitRenderer, init_streamlit_comm  
 
@@ -55,6 +56,8 @@ try:
     data = eny.GET('encode')
     jwt = eny.decodeToken(data, confs['geral']['jwt'])   
     schemaUsuario = 'moodle_' + eny.decriptaAES(jwt['data']['schema'], confs['geral']['jwt'])
+    modo = jwt['data']['modo']
+
 except Exception as e:
     st.text(e)
     if "schema" in eny.secrets()['dev']:
@@ -67,8 +70,11 @@ if schemaUsuario == 'SEM_DADOS':
     st.subheader(_("Modo Inválido"))
     st.markdown(f"{_('Acesse pelo site do')} [MDI]({confs['geral']['mdilink']})")
 else:
-    st.text(schemaUsuario)
-    df = dataFrame()
+    st.text(modo)
+    if(modo == 'demo'):
+        df = eny.df_from_disk("./assets/demo.csv")
+    else:
+        df = dataFrame()
 
 
     #configure layout
@@ -96,6 +102,8 @@ else:
 
         from datetime import datetime, timedelta
         data_atual = datetime.now() - timedelta(days=660)
+        df['data_entrega'] = pd.to_datetime(df['data_entrega'], format='%Y-%m-%d')  # Specify the format if needed
+
         dfFilter =  df.loc[df['data_entrega'] >= data_atual]
 
         cols = st.columns(3)
@@ -112,5 +120,5 @@ else:
         st.markdown(_("O MDI utiliza um modelo estrela (Kimball/Imon) clássico. O que significa que o modelo foi reestruturado para consulta. "))
         st.markdown(_("Basicamente os dados importados ficam na estrutura abaixo como você pode analisar"))
 
-        df.columns = ['Tema', 'Nome do aluno', 'Indice Frazier', 'Indice Brunet', 'data_entrega', 'Task ID', 'Class ID', 'ano']
+        #df.columns = ['Tema', 'Nome do aluno', 'Indice Frazier', 'Indice Brunet', 'data_entrega', 'Task ID', 'Class ID', 'ano']
         st.dataframe(df)

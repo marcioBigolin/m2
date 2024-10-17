@@ -120,4 +120,20 @@ def decriptaAES(data, secret_key, separator="::"):
 
     return decrypted_data.decode()
 
-__all__ = ['loadLang', 'secrets', 'dataFrame', 'GET', 'decodeToken']
+def df_from_disk(file_path):
+    """
+    Lê um arquivo CSV do disco e retorna um DataFrame do pandas.
+
+    Parameters:
+    file_path (str): O caminho do arquivo CSV.
+
+    Returns:
+    pandas.DataFrame: DataFrame contendo os dados do arquivo CSV.
+    """
+    #Eny.ds(file_path)
+    import pandas as pd
+
+    df = pd.read_csv(file_path)
+    return df
+
+__all__ = ['loadLang', 'secrets', 'dataFrame', 'GET', 'decodeToken', 'df_from_disk']
