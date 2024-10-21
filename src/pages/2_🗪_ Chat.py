@@ -12,7 +12,6 @@ def gepeto(  ):
     import matplotlib.pyplot as plt
     import os
 
-    st.text(eny.secrets())
     if "key" in eny.secrets()['openai']:
         st.session_state.openai_key = eny.secrets()['openai']['key']
         st.session_state.prompt_history = []

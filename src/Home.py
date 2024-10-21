@@ -49,7 +49,7 @@ def pygwalker(df):
     renderer.render_explore()
 
 #############################
-
+schemaUsuario = "SEM_DADOS"
 confs = eny.secrets()
 
 try:
