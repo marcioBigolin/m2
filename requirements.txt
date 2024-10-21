@@ -1,10 +1,11 @@
-pandas
 pandasai==2.3.0
-langchain
-streamlit
-SQLAlchemy
-pygwalker
-psycopg2-binary
+pyyaml
+#langchain
+#langchain_core
+#streamlit
+#SQLAlchemy
+#pygwalker
+#psycopg2-binary
 pyjwt
 python-gettext
 cryptography

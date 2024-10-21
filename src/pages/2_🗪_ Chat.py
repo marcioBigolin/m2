@@ -6,12 +6,13 @@ _ = eny.loadLang("Home", "pt-br")
 
 
 
-def gepeto( df ):
+def gepeto(  ):
     from pandasai import SmartDataframe
-    from pandasai.llm import OpenAI
+    from pandasai.llm.openai import OpenAI
     import matplotlib.pyplot as plt
     import os
 
+    st.text(eny.secrets())
     if "key" in eny.secrets()['openai']:
         st.session_state.openai_key = eny.secrets()['openai']['key']
         st.session_state.prompt_history = []
@@ -33,8 +34,8 @@ def gepeto( df ):
             submitted = st.form_submit_button(_("Gerar"))
             if submitted:
                 with st.spinner():
-                    llm = OpenAI(api_token=st.session_state.openai_key)
-                    pandas_ai = SmartDataframe(df, config={
+                    llm = OpenAI(api_token=eny.secrets()['openai']['key'])
+                    pandas_ai = SmartDataframe("./assets/demo.csv", config={
                     "llm": llm, 
                     "conversational": False, 
                     "enable_cache": True,
@@ -61,7 +62,6 @@ def gepeto( df ):
                 st.session_state.prompt_history = []
                 st.session_state.df = None
 
-df = eny.df_from_disk("./assets/demo.csv")
 
 st.header(_("IA Generativa"))
-gepeto(df)
+gepeto()

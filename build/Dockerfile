@@ -8,7 +8,7 @@ RUN apt update && \
 
 WORKDIR /app
 
-RUN pip install streamlit SQLAlchemy psycopg2-binary 
-
+ 
+RUN pip install streamlit==1.31.1
 
     
