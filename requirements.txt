@@ -1,5 +1,5 @@
 pandas
-pandasai
+pandasai==2.3.0
 langchain
 streamlit
 SQLAlchemy

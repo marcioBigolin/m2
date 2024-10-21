@@ -8,7 +8,7 @@ _ = eny.loadLang("Home", "pt-br")
 
 def gepeto( df ):
     from pandasai import SmartDataframe
-    from pandasai.llm.openai import OpenAI
+    from pandasai.llm import OpenAI
     import matplotlib.pyplot as plt
     import os
 
