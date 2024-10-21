@@ -53,11 +53,19 @@ def pygwalker(df):
 confs = eny.secrets()
 
 try:
-    data = eny.GET('encode')
-    jwt = eny.decodeToken(data, confs['geral']['jwt'])   
-    schemaUsuario = 'moodle_' + eny.decriptaAES(jwt['data']['schema'], confs['geral']['jwt'])
-    modo = jwt['data']['modo']
-
+    data = eny.GET('encode', False)
+    if data:
+        jwt = eny.decodeToken(data, confs['geral']['jwt'])   
+        schemaUsuario = 'moodle_' + eny.decriptaAES(jwt['data']['schema'], confs['geral']['jwt'])
+        modo = jwt['data']['modo']
+        st.session_state['modo'] = modo
+        st.session_state['schema'] = schemaUsuario
+    else:
+        if 'modo' in st.session_state:
+            modo = st.session_state['modo']
+        if 'schema' in st.session_state:
+            schemaUsuario = st.session_state['schema']
+            
 except Exception as e:
     st.text(e)
     if "schema" in eny.secrets()['dev']:
